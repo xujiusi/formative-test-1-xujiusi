@@ -76,14 +76,14 @@ M2<-t(M1)
 
 Create a third matrix (M3) that is a student by student matrix where the cells in the matrix represent if two studentes registered on the same day (This will take a lot of processing power, you may not be able to complete it if you have a large number of students)
 
-
 ```{r}
 M3<- M1 %*% M2
+  
 ```
 
 Convert the diagonal of your matrix into NAs
 
 ```{r}
-diag(M2)<-NA
+diag(M2)
 
 ```
