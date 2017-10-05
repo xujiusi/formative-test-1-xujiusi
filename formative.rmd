@@ -1,0 +1,56 @@
+---
+title: "formative.rmd"
+author: "Jiusi Xu"
+date: "October 5, 2017"
+output: html_document
+---
+
+```{r}
+install.packages("dplyr")
+library(dplyr)
+
+```
+
+How many people enrolled in HarvardX/CS50x recieved certification in 2012? 
+
+```{r}
+d1<-read.csv("HMXPC13_DI_v2_5-14-14.csv")
+d2<-filter(d1,certified=="1")
+d3<-dplyr::filter(d2, grepl('HarvardX/CS50x', course_id))
+count(d3,certified)   
+
+```
+
+How many people registered for HarvardX/CS50x from Columbia on October 15, 2012?
+
+```{r}
+d4<-filter(d1,start_time_DI=="2012-10-15")  #people who registered on 2012/10/15
+d5<-filter(d4,final_cc_cname_DI=="Columbia")   #people who are from Columbia and registered on 2012/10/15
+
+count(d5)
+count(d4)
+
+#I got 0 results in d5. I checked the original data and I found people from Columbia. It should not be 0 results.
+```
+
+Create a new data frame (D2) that includes student ID and registration date for all students from a country of your choice
+
+```{r}
+d6<-filter(d1,final_cc_cname_DI=="Japan") #students from Japan
+D2<-select(d6,start_time_DI,userid_DI)
+
+```
+
+Create a new data frame (D3) in which the column names are the registration dates, with one column containing the student ids and all other cells indicating a 1 if the student registered on that date or an NA if they did not
+
+```{r}
+d7<-select(d1,start_time_DI,userid_DI)
+matching<-as.numeric(d7$start_time_DI %in% D2$start_time_DI)
+D3<-cbind(d7,matching)
+
+```
+
+Now make the row names of D3 the student ids on your new data frame and remove the user id column from your data frame
+
+```{r}
+
