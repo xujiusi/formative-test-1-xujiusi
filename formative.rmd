@@ -47,10 +47,43 @@ Create a new data frame (D3) in which the column names are the registration date
 d7<-select(d1,start_time_DI,userid_DI)
 matching<-as.numeric(d7$start_time_DI %in% D2$start_time_DI)
 D3<-cbind(d7,matching)
+D3[D3 == 0] <- NA
 
 ```
 
 Now make the row names of D3 the student ids on your new data frame and remove the user id column from your data frame
 
 ```{r}
+d8<-D3
+D3<-select(d8,-2)
+names(D3)<-c("Registration Dates","Registered")
 
+```
+
+Convert your data frame to a matrix (M1)
+
+```{r}
+M1<-data.matrix(D3)
+
+```
+
+Create a new matrix which is the transposed version of your matrix (M2)
+
+```{r}
+M2<-t(M1)
+
+```
+
+Create a third matrix (M3) that is a student by student matrix where the cells in the matrix represent if two studentes registered on the same day (This will take a lot of processing power, you may not be able to complete it if you have a large number of students)
+
+
+```{r}
+M3<- M1 %*% M2
+```
+
+Convert the diagonal of your matrix into NAs
+
+```{r}
+diag(M2)<-NA
+
+```
